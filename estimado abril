@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estimado Abril 2026 — Google Cloud · Valdishopper</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --vs-pink:         #D64294;
+    --vs-navy:         #0B1C49;
+    --vs-white:        #FFFFFF;
+    --vs-pink-light:   #F0A0CC;
+    --vs-pink-dark:    #A02D6E;
+    --vs-pink-subtle:  #FBF0F7;
+    --vs-navy-light:   #1E3A7A;
+    --vs-navy-muted:   #3D5490;
+    --vs-navy-subtle:  #EEF1F8;
+    --vs-gray-light:   #F5F6FA;
+    --vs-gray-mid:     #8A94A8;
+    --vs-gray-dark:    #3A3F52;
+    --vs-success:      #1B8A5A;
+    --vs-warning:      #D98A00;
+    --vs-danger:       #C0392B;
+    --vs-font-title:   'League Spartan', sans-serif;
+    --vs-font-body:    'Montserrat', sans-serif;
+    --vs-radius-sm:    6px;
+    --vs-radius-md:    10px;
+    --vs-radius-lg:    16px;
+    --vs-radius-pill:  999px;
+    --vs-shadow-sm:    0 1px 4px rgba(11,28,73,0.10);
+    --vs-shadow-md:    0 4px 16px rgba(11,28,73,0.14);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--vs-font-body); background: var(--vs-gray-light); color: var(--vs-navy); min-height: 100vh; }
+
+  header {
+    background: var(--vs-navy);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { font-family: var(--vs-font-title); font-size: 20px; font-weight: 700; color: var(--vs-white); letter-spacing: -0.5px; }
+  .logo span { color: var(--vs-pink); }
+  .header-badge {
+    background: var(--vs-pink-subtle); color: var(--vs-pink-dark);
+    font-size: 12px; font-weight: 600; padding: 4px 14px;
+    border-radius: var(--vs-radius-pill);
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .page-title { font-family: var(--vs-font-title); font-size: 26px; font-weight: 700; color: var(--vs-navy); margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: var(--vs-gray-mid); margin-bottom: 1.75rem; font-weight: 500; }
+
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 1.5rem; }
+  .metric { background: var(--vs-white); border-radius: var(--vs-radius-lg); padding: 1.1rem 1.25rem; border: 0.5px solid #D0D5E8; box-shadow: var(--vs-shadow-sm); }
+  .metric.highlight { background: var(--vs-navy); border-color: var(--vs-navy); }
+  .metric .label { font-size: 11px; font-weight: 600; color: var(--vs-gray-mid); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .metric.highlight .label { color: var(--vs-navy-muted); }
+  .metric .value { font-family: var(--vs-font-title); font-size: 26px; font-weight: 700; color: var(--vs-navy); }
+  .metric.highlight .value { color: var(--vs-pink); }
+  .metric .sub { font-size: 11px; color: var(--vs-gray-mid); margin-top: 3px; }
+  .metric.highlight .sub { color: var(--vs-navy-muted); }
+
+  .card { background: var(--vs-white); border-radius: var(--vs-radius-lg); border: 0.5px solid #D0D5E8; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--vs-shadow-sm); }
+  .card-title { font-family: var(--vs-font-title); font-size: 13px; font-weight: 700; color: var(--vs-navy); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 7px 10px; color: var(--vs-gray-mid); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #EEF1F8; }
+  td { padding: 11px 10px; border-bottom: 1px solid #F5F6FA; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--vs-gray-light); transition: background 0.15s; }
+
+  .proj-name { display: flex; align-items: center; font-weight: 600; color: var(--vs-navy); gap: 8px; }
+  .proj-id { font-size: 11px; color: var(--vs-gray-mid); margin-top: 2px; padding-left: 18px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--vs-radius-pill); }
+  .badge-pink  { background: var(--vs-pink-subtle); color: var(--vs-pink-dark); }
+  .badge-navy  { background: var(--vs-navy-subtle); color: var(--vs-navy); }
+  .badge-gray  { background: #F0F1F5; color: var(--vs-gray-dark); }
+
+  .total-row { border-top: 1.5px solid var(--vs-navy-subtle); margin-top: 10px; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; font-family: var(--vs-font-title); color: var(--vs-navy); }
+  .total-row span:last-child { color: var(--vs-pink); font-size: 18px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.25rem; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .chart-wrap { position: relative; width: 100%; }
+
+  .legend { display: flex; gap: 18px; font-size: 12px; color: var(--vs-gray-mid); margin-bottom: 10px; font-weight: 500; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend-sq { width: 10px; height: 10px; border-radius: 2px; }
+
+  .note { font-size: 12px; color: var(--vs-gray-mid); background: var(--vs-navy-subtle); border-radius: var(--vs-radius-md); padding: 10px 16px; margin-top: 0.5rem; border-left: 3px solid var(--vs-navy); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">VALDI<span>SHOPPER</span></span>
+  <span class="header-badge">Google Cloud · Abril 2026</span>
+</header>
+
+<div class="container">
+  <h1 class="page-title">Estimado de costos — Abril 2026</h1>
+  <p class="page-sub">Previsión por proyecto · Fuente: Google Cloud Console · Actualizado 2 abril 2026</p>
+
+  <div class="grid-4">
+    <div class="metric highlight">
+      <p class="label">Costo previsto GCP</p>
+      <p class="value">$344,059</p>
+      <p class="sub">Abril 2026 completo</p>
+    </div>
+    <div class="metric">
+      <p class="label">Promedio diario</p>
+      <p class="value">$11,469</p>
+      <p class="sub">$344,059 ÷ 30 días</p>
+    </div>
+    <div class="metric">
+      <p class="label">Días transcurridos</p>
+      <p class="value">2</p>
+      <p class="sub">de 30 en abril</p>
+    </div>
+    <div class="metric">
+      <p class="label">Gasto real acumulado</p>
+      <p class="value">$5,382</p>
+      <p class="sub">días 1–2 de abril</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Desglose por proyecto</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th style="text-align:right;">Diario</th>
+          <th style="text-align:right;">Estimado abril</th>
+          <th style="text-align:right;">Participación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="proj-name"><span class="dot" style="background:#D64294;"></span>CCOHUB</div>
+            <div class="proj-id">ccohub</div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$3,621</td>
+          <td style="text-align:right; font-weight:700;">$108,630</td>
+          <td style="text-align:right;"><span class="badge badge-pink">65.4%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name"><span class="dot" style="background:#0B1C49;"></span>ROTOR</div>
+            <div class="proj-id">rotor-488517</div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$1,589</td>
+          <td style="text-align:right; font-weight:700;">$47,670</td>
+          <td style="text-align:right;"><span class="badge badge-navy">28.7%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name"><span class="dot" style="background:#3D5490;"></span>Rendicion Estacionamiento</div>
+            <div class="proj-id">gen-lang-client-...</div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$161</td>
+          <td style="text-align:right; font-weight:700;">$4,830</td>
+          <td style="text-align:right;"><span class="badge badge-gray">2.9%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name"><span class="dot" style="background:#8A94A8;"></span>sigmc</div>
+            <div class="proj-id">sigmc-5fae5</div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$11</td>
+          <td style="text-align:right; font-weight:700;">$330</td>
+          <td style="text-align:right;"><span class="badge badge-gray">0.1%</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="total-row">
+      <span>Total previsto Google Cloud</span>
+      <span>$344,059 USD</span>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card" style="margin-bottom:0;">
+      <p class="card-title">Previsión por proyecto</p>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <p class="card-title">Distribución</p>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="doughnutChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Acumulado mensual — proyección vs real</p>
+    <div class="legend">
+      <span><span class="legend-sq" style="background:#D64294;"></span>Proyección acumulada</span>
+      <span><span class="legend-sq" style="background:#1B8A5A; border-radius:50%;"></span>Gasto real</span>
+    </div>
+    <div class="chart-wrap" style="height:200px;">
+      <canvas id="lineChart"></canvas>
+    </div>
+  </div>
+
+  <div class="note">
+    Datos obtenidos desde Google Cloud Console — Abril 2026. Costo previsto $344,059 USD · ~$11,469/día. Valores diarios calculados distribuyendo la previsión mensual en 30 días proporcionalmente por proyecto.
+  </div>
+</div>
+
+<script>
+const vsPink  = '#D64294';
+const vsNavy  = '#0B1C49';
+const vsNavyM = '#3D5490';
+const vsGrayM = '#8A94A8';
+const vsGrayL = '#F5F6FA';
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: ['CCOHUB', 'ROTOR', 'Rendicion', 'sigmc'],
+    datasets: [{ data: [108630, 47670, 4830, 330], backgroundColor: [vsPink, vsNavy, vsNavyM, vsGrayM], borderRadius: 6, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' $' + ctx.parsed.y.toLocaleString() } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: vsNavy } },
+      y: { grid: { color: vsGrayL }, ticks: { callback: (v) => '$' + (v/1000).toFixed(0) + 'k', font: { size: 11 }, color: vsGrayM } }
+    }
+  }
+});
+
+new Chart(document.getElementById('doughnutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['CCOHUB', 'ROTOR', 'Rendicion', 'sigmc'],
+    datasets: [{ data: [108630, 47670, 4830, 330], backgroundColor: [vsPink, vsNavy, vsNavyM, vsGrayM], borderWidth: 3, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '68%',
+    plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 11 }, padding: 10, boxWidth: 10, color: vsNavy } }, tooltip: { callbacks: { label: (ctx) => ' $' + ctx.parsed.toLocaleString() } } }
+  }
+});
+
+const days = Array.from({length: 30}, (_, i) => 'D' + (i+1));
+const acumulado = Array.from({length: 30}, (_, i) => Math.round((i+1) * 11469));
+const real = Array.from({length: 30}, (_, i) => i === 0 ? 3802 : i === 1 ? 5382 : null);
+
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [
+      { label: 'Proyección', data: acumulado, borderColor: vsPink, backgroundColor: 'rgba(214,66,148,0.07)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2.5 },
+      { label: 'Real', data: real, borderColor: '#1B8A5A', backgroundColor: '#1B8A5A', pointRadius: 6, pointHoverRadius: 8, borderWidth: 2, spanGaps: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' $' + ctx.parsed.y.toLocaleString() } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 8, font: { size: 11 }, color: vsGrayM } },
+      y: { grid: { color: vsGrayL }, ticks: { callback: (v) => '$' + (v/1000).toFixed(0) + 'k', font: { size: 11 }, color: vsGrayM } }
+    }
+  }
+});
+</script>
+</body>
+</html>
