@@ -54,6 +54,26 @@
   .page-title { font-family: var(--vs-font-title); font-size: 26px; font-weight: 700; color: var(--vs-navy); margin-bottom: 4px; }
   .page-sub { font-size: 13px; color: var(--vs-gray-mid); margin-bottom: 1.75rem; font-weight: 500; }
 
+  .section-label {
+    font-family: var(--vs-font-title);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--vs-navy-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #D0D5E8;
+  }
+
   .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 1.5rem; }
   .metric { background: var(--vs-white); border-radius: var(--vs-radius-lg); padding: 1.1rem 1.25rem; border: 0.5px solid #D0D5E8; box-shadow: var(--vs-shadow-sm); }
   .metric.highlight { background: var(--vs-navy); border-color: var(--vs-navy); }
@@ -78,9 +98,12 @@
   .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
   .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--vs-radius-pill); }
-  .badge-pink  { background: var(--vs-pink-subtle); color: var(--vs-pink-dark); }
-  .badge-navy  { background: var(--vs-navy-subtle); color: var(--vs-navy); }
-  .badge-gray  { background: #F0F1F5; color: var(--vs-gray-dark); }
+  .badge-pink    { background: var(--vs-pink-subtle); color: var(--vs-pink-dark); }
+  .badge-navy    { background: var(--vs-navy-subtle); color: var(--vs-navy); }
+  .badge-gray    { background: #F0F1F5; color: var(--vs-gray-dark); }
+  .badge-success { background: #E8F7F1; color: var(--vs-success); }
+  .badge-warn    { background: #FEF6E4; color: var(--vs-warning); }
+  .badge-danger  { background: #FDECEA; color: var(--vs-danger); }
 
   .total-row { border-top: 1.5px solid var(--vs-navy-subtle); margin-top: 10px; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; font-family: var(--vs-font-title); color: var(--vs-navy); }
   .total-row span:last-child { color: var(--vs-pink); font-size: 18px; }
@@ -95,6 +118,25 @@
   .legend-sq { width: 10px; height: 10px; border-radius: 2px; }
 
   .note { font-size: 12px; color: var(--vs-gray-mid); background: var(--vs-navy-subtle); border-radius: var(--vs-radius-md); padding: 10px 16px; margin-top: 0.5rem; border-left: 3px solid var(--vs-navy); font-weight: 500; }
+
+  /* === SERVICIOS === */
+  .svc-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .svc-bar-bg { flex: 1; height: 6px; background: var(--vs-gray-light); border-radius: 99px; overflow: hidden; }
+  .svc-bar-fill { height: 100%; border-radius: 99px; background: var(--vs-pink); transition: width 0.4s ease; }
+  .svc-pct { font-size: 11px; font-weight: 600; color: var(--vs-gray-mid); min-width: 36px; text-align: right; }
+
+  .delta { font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 2px; }
+  .delta-up   { color: var(--vs-danger); }
+  .delta-down { color: var(--vs-success); }
+
+  .saving-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 600;
+    background: #E8F7F1; color: var(--vs-success);
+    padding: 2px 8px; border-radius: var(--vs-radius-pill);
+  }
+
+  .svc-icon { font-size: 16px; line-height: 1; }
 </style>
 </head>
 <body>
@@ -106,7 +148,10 @@
 
 <div class="container">
   <h1 class="page-title">Estimado de costos — Abril 2026</h1>
-  <p class="page-sub">Previsión por proyecto · Fuente: Google Cloud Console · Actualizado 2 abril 2026</p>
+  <p class="page-sub">Previsión por proyecto y servicio · Fuente: Google Cloud Console · Actualizado 8 abril 2026</p>
+
+  <!-- ── SECCIÓN 1: MÉTRICAS GLOBALES ── -->
+  <div class="section-label">Resumen general</div>
 
   <div class="grid-4">
     <div class="metric highlight">
@@ -121,7 +166,7 @@
     </div>
     <div class="metric">
       <p class="label">Días transcurridos</p>
-      <p class="value">2</p>
+      <p class="value">8</p>
       <p class="sub">de 30 en abril</p>
     </div>
     <div class="metric">
@@ -131,8 +176,11 @@
     </div>
   </div>
 
+  <!-- ── SECCIÓN 2: DESGLOSE POR PROYECTO ── -->
+  <div class="section-label">Desglose por proyecto</div>
+
   <div class="card">
-    <p class="card-title">Desglose por proyecto</p>
+    <p class="card-title">Previsión mensual por proyecto</p>
     <table>
       <thead>
         <tr>
@@ -202,6 +250,222 @@
     </div>
   </div>
 
+  <!-- ── SECCIÓN 3: DESGLOSE POR SERVICIO ── -->
+  <div class="section-label" style="margin-top:1.5rem;">Desglose por servicio — consolidado GCP</div>
+
+  <div class="card">
+    <p class="card-title">Servicios · Costo real acumulado (1–7 abril)</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Servicio</th>
+          <th style="text-align:right;">Costo por uso</th>
+          <th style="text-align:right;">Ahorros</th>
+          <th style="text-align:right;">Subtotal</th>
+          <th style="text-align:right;">% cambio</th>
+          <th style="text-align:right; min-width:110px;">Participación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">🗄️</span>
+              Cloud SQL
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$44,719</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$44,719</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 67%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:64.9%; background:#D64294;"></div></div>
+              <span class="svc-pct">64.9%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">⚡</span>
+              Cloud Memorystore for Redis
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$10,350</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$10,350</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 10%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:15.0%; background:#0B1C49;"></div></div>
+              <span class="svc-pct">15.0%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">🌐</span>
+              Networking
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$7,159</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$7,159</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 8%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:10.4%; background:#3D5490;"></div></div>
+              <span class="svc-pct">10.4%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">✨</span>
+              Gemini API
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$5,028</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$5,028</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 14%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:7.3%; background:#5C6BC0;"></div></div>
+              <span class="svc-pct">7.3%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">📦</span>
+              Artifact Registry
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$1,422</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$1,422</td>
+          <td style="text-align:right;"><span class="delta delta-up">↑ 4%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:2.1%; background:#8A94A8;"></div></div>
+              <span class="svc-pct">2.1%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">🚀</span>
+              Cloud Run
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$742</td>
+          <td style="text-align:right;"><span class="saving-chip">-$685</span></td>
+          <td style="text-align:right; font-weight:700;">$57</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 96%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:0.1%; background:#1B8A5A;"></div></div>
+              <span class="svc-pct">0.1%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">🔗</span>
+              Cloud DNS
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$44</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$44</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 2%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:0.06%; background:#8A94A8;"></div></div>
+              <span class="svc-pct">0.1%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">⚙️</span>
+              Compute Engine
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$41</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$41</td>
+          <td style="text-align:right;"><span class="delta delta-up">↑ 5%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:0.06%; background:#8A94A8;"></div></div>
+              <span class="svc-pct">0.1%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">🗂️</span>
+              Cloud Storage
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$4</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$4</td>
+          <td style="text-align:right;"><span class="delta delta-down">↓ 43%</span></td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:0.01%; background:#8A94A8;"></div></div>
+              <span class="svc-pct">&lt;0.1%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="proj-name">
+              <span class="svc-icon">🔨</span>
+              Cloud Build
+            </div>
+          </td>
+          <td style="text-align:right; color:var(--vs-gray-dark);">$1</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td style="text-align:right; font-weight:700;">$1</td>
+          <td style="text-align:right; color:var(--vs-gray-mid);">—</td>
+          <td>
+            <div class="svc-bar-wrap">
+              <div class="svc-bar-bg"><div class="svc-bar-fill" style="width:0.01%; background:#8A94A8;"></div></div>
+              <span class="svc-pct">&lt;0.1%</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="total-row">
+      <span>Total real acumulado (servicios)</span>
+      <span>$68,825 CLP</span>
+    </div>
+  </div>
+
+  <!-- ── Gráfico servicios ── -->
+  <div class="card">
+    <p class="card-title">Top servicios por costo (subtotal real)</p>
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="svcChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 4: PROYECCIÓN vs REAL ── -->
+  <div class="section-label">Seguimiento mensual</div>
+
   <div class="card">
     <p class="card-title">Acumulado mensual — proyección vs real</p>
     <div class="legend">
@@ -214,7 +478,7 @@
   </div>
 
   <div class="note">
-    Datos obtenidos desde Google Cloud Console — Abril 2026. Costo previsto $344,059 CLP · ~$11,469/día. Valores diarios calculados distribuyendo la previsión mensual en 30 días proporcionalmente por proyecto.
+    Datos obtenidos desde Google Cloud Console — Abril 2026. Costo previsto $344,059 CLP · ~$11,469/día. Desglose por servicios: consolidado total GCP días 1–7 abril · Total acumulado real $68,825 CLP · Ahorro registrado en Cloud Run: -$685.
   </div>
 </div>
 
@@ -222,9 +486,12 @@
 const vsPink  = '#D64294';
 const vsNavy  = '#0B1C49';
 const vsNavyM = '#3D5490';
+const vsNavyL = '#5C6BC0';
 const vsGrayM = '#8A94A8';
 const vsGrayL = '#F5F6FA';
+const vsGreen = '#1B8A5A';
 
+// ── Bar: proyectos ──
 new Chart(document.getElementById('barChart'), {
   type: 'bar',
   data: {
@@ -241,6 +508,7 @@ new Chart(document.getElementById('barChart'), {
   }
 });
 
+// ── Doughnut: proyectos ──
 new Chart(document.getElementById('doughnutChart'), {
   type: 'doughnut',
   data: {
@@ -253,9 +521,35 @@ new Chart(document.getElementById('doughnutChart'), {
   }
 });
 
+// ── Bar horizontal: servicios ──
+new Chart(document.getElementById('svcChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Cloud SQL', 'Memorystore', 'Networking', 'Gemini API', 'Artifact Reg.', 'Cloud Run', 'Otros'],
+    datasets: [{
+      data: [44719, 10350, 7159, 5028, 1422, 57, 86],
+      backgroundColor: [vsPink, vsNavy, vsNavyM, vsNavyL, vsGrayM, vsGreen, '#C0C4D0'],
+      borderRadius: 5, borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' $' + ctx.parsed.x.toLocaleString() } } },
+    scales: {
+      x: { grid: { color: vsGrayL }, ticks: { callback: (v) => '$' + (v/1000).toFixed(0) + 'k', font: { size: 11 }, color: vsGrayM } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 }, color: vsNavy } }
+    }
+  }
+});
+
+// ── Line: proyección vs real ──
 const days = Array.from({length: 30}, (_, i) => 'D' + (i+1));
 const acumulado = Array.from({length: 30}, (_, i) => Math.round((i+1) * 11469));
-const real = Array.from({length: 30}, (_, i) => i === 0 ? 3802 : i === 1 ? 5382 : null);
+const real = Array.from({length: 30}, (_, i) => {
+  const vals = [3802, 5382, null, null, null, null, null, null];
+  return i < vals.length ? vals[i] : null;
+});
 
 new Chart(document.getElementById('lineChart'), {
   type: 'line',
@@ -263,7 +557,7 @@ new Chart(document.getElementById('lineChart'), {
     labels: days,
     datasets: [
       { label: 'Proyección', data: acumulado, borderColor: vsPink, backgroundColor: 'rgba(214,66,148,0.07)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2.5 },
-      { label: 'Real', data: real, borderColor: '#1B8A5A', backgroundColor: '#1B8A5A', pointRadius: 6, pointHoverRadius: 8, borderWidth: 2, spanGaps: false }
+      { label: 'Real', data: real, borderColor: vsGreen, backgroundColor: vsGreen, pointRadius: 6, pointHoverRadius: 8, borderWidth: 2, spanGaps: false }
     ]
   },
   options: {
